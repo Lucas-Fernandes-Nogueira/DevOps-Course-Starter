@@ -11,7 +11,31 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        <!-- List the todo items here -->
+        {% for item in items %}
+          <li style="list-style-type: none;">
+            <form action="/remove-item" method="POST" style="display: inline;">
+              <input type="hidden" id="id" name="id" value={{item.id}} />
+              <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
+                <i class="fas fa-trash-alt" style="color:red;"></i>
+              </button>
+            </form>
+            <form action="/toggle-status" method="POST" style="display: inline;">
+              <input type="hidden" id="id" name="id" value={{item.id}} />
+              <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
+                {% if item.status == 'Completed' %} 
+                  <i class="far fa-check-square"></i>
+                {% else %}
+                  <i class="far fa-square"></i>
+                {% endif %}
+              </button>
+              {{ item.title }}
+            </form>
+          </li>         
+        {% endfor %}
+        <form action="/new-item" method="POST">
+          <button type="submit"  style="background-color:rgba(0, 0, 0, 0);"><i class="fas fa-plus"></i></button>
+          <input type="text" id="title" name="title">
+        </form>
       </ul>
     </div>
   </div>
