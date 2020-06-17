@@ -13,7 +13,8 @@ def index():
 @app.route('/new-item', methods=['POST'])
 def addItem():
     title = request.form.get('title') 
-    session.add_item(title)
+    if title:
+        session.add_item(title)
     return redirect(url_for('index'))
 
 @app.route('/toggle-status', methods=['POST'])
