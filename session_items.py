@@ -1,77 +1,65 @@
-from flask import session
+import requests
+import os
+from copy import deepcopy
+from to_do_item import ToDoItem
 
-_DEFAULT_ITEMS = [
-    { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
-    { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
-]
+API_KEY = os.getenv('API_KEY')
+TOKEN = os.getenv('TOKEN')
+BOARD_ID = os.getenv('BOARD_ID')
+TO_DO_LIST_ID = os.getenv('TO_DO_LIST_ID')
+DONE_LIST_ID = os.getenv('DONE_LIST_ID')
+
+CREDENTIALS = { 'key': API_KEY, 'token': TOKEN }
+
+GET_BOARD_URI = 'https://api.trello.com/1/boards/'
+GET_CARDS_IN_A_LIST_URI = 'https://api.trello.com/1/lists/%s/cards'
+POST_CARD_URI = 'https://api.trello.com/1/cards/'
+DELETE_CARD_URI = 'https://api.trello.com/1/cards/%s'
+PUT_CARD_URI = 'https://api.trello.com/1/cards/%s'
 
 
 def get_items():
-    """
-    Fetches all saved items from the session.
+    items = []
+    fetch_and_append_to_do_list_items(items)
+    fetch_and_append_done_list_items(items)
+    sort_items_by_id(items)
+    return items
 
-    Returns:
-        list: The list of saved items.
-    """
-    return session.get('items', _DEFAULT_ITEMS)
-
+def get_id(item):
+    return item.id
 
 def get_item(id):
-    """
-    Fetches the saved item with the specified ID.
-
-    Args:
-        id: The ID of the item.
-
-    Returns:
-        item: The saved item, or None if no items match the specified ID.
-    """
     items = get_items()
-    return next((item for item in items if item['id'] == int(id)), None)
+    return next((item for item in items if item.id == id), None)
 
 
 def add_item(title):
-    """
-    Adds a new item with the specified title to the session.
+    params = deepcopy(CREDENTIALS)
+    params['name'] = title
+    params['idList'] = TO_DO_LIST_ID
+    requests.post(POST_CARD_URI, params=params)
 
-    Args:
-        title: The title of the item.
-
-    Returns:
-        item: The saved item.
-    """
-    items = get_items()
-
-    # Determine the ID for the item based on that of the previously added item
-    id = items[-1]['id'] + 1 if items else 0
-
-    item = { 'id': id, 'title': title, 'status': 'Not Started' }
-
-    # Add the item to the list
-    items.append(item)
-    session['items'] = items
-
-    return item
-
-
-def save_item(item):
-    """
-    Updates an existing item in the session. If no existing item matches the ID of the specified item, nothing is saved.
-
-    Args:
-        item: The item to save.
-    """
-    existing_items = get_items()
-    updated_items = [item if item['id'] == existing_item['id'] else existing_item for existing_item in existing_items]
-
-    session['items'] = updated_items
-
-    return item
+def toggle_status(item):
+    params = deepcopy(CREDENTIALS)
+    if (item.status == 'Completed'):
+        params['idList'] = TO_DO_LIST_ID
+        requests.put(PUT_CARD_URI % (item.id), params=params)
+    else:
+        params['idList'] = DONE_LIST_ID
+        requests.put(PUT_CARD_URI % (item.id), params=params)
 
 def remove_item(item):
-    existing_items = get_items()
-    existing_items.remove(item)
-    
-    session['items'] = existing_items
+    requests.delete(DELETE_CARD_URI % (item.id), params=CREDENTIALS)
 
-    return item
+def sort_items_by_id(items):
+    items.sort(key=get_id)
+
+def fetch_and_append_to_do_list_items(items):
+    r = requests.get(GET_CARDS_IN_A_LIST_URI % (TO_DO_LIST_ID), params=CREDENTIALS)
+    for item in r.json():
+        items.append(ToDoItem.parse_json_not_started_item(item))
+
+def fetch_and_append_done_list_items(items):
+    r = requests.get(GET_CARDS_IN_A_LIST_URI % (DONE_LIST_ID), params=CREDENTIALS)
+    for item in r.json():
+        items.append(ToDoItem.parse_json_completed_item(item))

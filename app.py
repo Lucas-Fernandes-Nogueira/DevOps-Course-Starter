@@ -22,12 +22,7 @@ def toggleStatus():
     itemId = request.form.get('id')
     item = session.get_item(itemId)
 
-    if item["status"] == 'Not Started':
-        item["status"] = 'Completed'
-    else:
-        item["status"] = 'Not Started'
-
-    session.save_item(item)
+    session.toggle_status(item)
 
     return redirect(url_for('index'))
 
