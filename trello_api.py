@@ -11,12 +11,7 @@ DONE_LIST_ID = os.getenv('DONE_LIST_ID')
 
 CREDENTIALS = { 'key': API_KEY, 'token': TOKEN }
 
-GET_BOARD_URI = 'https://api.trello.com/1/boards/'
-GET_CARDS_IN_A_LIST_URI = 'https://api.trello.com/1/lists/%s/cards'
-POST_CARD_URI = 'https://api.trello.com/1/cards/'
-DELETE_CARD_URI = 'https://api.trello.com/1/cards/%s'
-PUT_CARD_URI = 'https://api.trello.com/1/cards/%s'
-
+TRELLO_API_BASE_URL = 'https://api.trello.com/1'
 
 def get_items():
     items = []
@@ -37,29 +32,29 @@ def add_item(title):
     params = deepcopy(CREDENTIALS)
     params['name'] = title
     params['idList'] = TO_DO_LIST_ID
-    requests.post(POST_CARD_URI, params=params)
+    requests.post(f'{TRELLO_API_BASE_URL}/cards', params=params)
 
 def toggle_status(item):
     params = deepcopy(CREDENTIALS)
     if (item.status == 'Completed'):
         params['idList'] = TO_DO_LIST_ID
-        requests.put(PUT_CARD_URI % (item.id), params=params)
     else:
         params['idList'] = DONE_LIST_ID
-        requests.put(PUT_CARD_URI % (item.id), params=params)
+    
+    requests.put(f'{TRELLO_API_BASE_URL}/cards/{item.id}', params=params)
 
 def remove_item(item):
-    requests.delete(DELETE_CARD_URI % (item.id), params=CREDENTIALS)
+    requests.delete(f'{TRELLO_API_BASE_URL}/cards/{item.id}', params=CREDENTIALS)
 
 def sort_items_by_id(items):
     items.sort(key=get_id)
 
 def fetch_and_append_to_do_list_items(items):
-    r = requests.get(GET_CARDS_IN_A_LIST_URI % (TO_DO_LIST_ID), params=CREDENTIALS)
+    r = requests.get(f'{TRELLO_API_BASE_URL}/lists/{TO_DO_LIST_ID}/cards', params=CREDENTIALS)
     for item in r.json():
         items.append(ToDoItem.parse_json_not_started_item(item))
 
 def fetch_and_append_done_list_items(items):
-    r = requests.get(GET_CARDS_IN_A_LIST_URI % (DONE_LIST_ID), params=CREDENTIALS)
+    r = requests.get(f'{TRELLO_API_BASE_URL}/lists/{DONE_LIST_ID}/cards', params=CREDENTIALS)
     for item in r.json():
         items.append(ToDoItem.parse_json_completed_item(item))
