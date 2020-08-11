@@ -22,10 +22,14 @@
             <form action="{{url_for('toggleStatus')}}" method="POST" style="display: inline;">
               <input type="hidden" id="id" name="id" value={{item.id}} />
               <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
-                {% if item.status == 'Completed' %} 
+                {% if item.isDone() %} 
                   <i class="far fa-check-square"></i>
-                {% else %}
+                {% elif item.isDoing() %}
+                  <i class="fas fa-spinner"></i>
+                {% elif item.isTodo() %}
                   <i class="far fa-square"></i>
+                {% else %}
+                  <div class="error-message">There was an error loading this task's status.</div>
                 {% endif %}
               </button>
               {{ item.title }}
