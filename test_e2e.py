@@ -33,6 +33,21 @@ def test_app():
     trello_api.delete_board(board_id)
 
 def test_task_journey(driver, test_app):
- driver.get('http://localhost:5000/')
+    driver.get('http://localhost:5000/')
+    assert driver.title == 'To-Do App'
 
- assert driver.title == 'To-Do App'
+    inputBox = driver.find_element_by_id("title")
+    submitButton = driver.find_elements_by_xpath("/html/body/div/div[2]/div[1]/ul/form/button")[0]
+
+    inputBox.send_keys("test item")
+    submitButton.click()
+
+    toDoItems = driver.find_elements_by_css_selector('.to-do-list li form')
+
+    counter = 0
+
+    for item in toDoItems:
+        if item.text == "test item":
+            counter += 1
+    
+    assert counter == 1
