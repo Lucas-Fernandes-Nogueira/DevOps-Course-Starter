@@ -38,16 +38,25 @@ You should see output similar to the following:
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
 ## Run the Tests
-You just need to run the appropriate command from the project root:
+If you want to run all tests, use the following command:
+```bash
+$ pytest
+```
+
+If you want to run the test suits individually, you just need to run the appropriate command from the project root:
+
 ### Unit Tests
 ```bash
 $ pytest test_indexViewModel.py
 ```
-Integration Tests
+### Integration Tests
 ```bash
 $ pytest test_app.py    
 ```
-End to End tests
+### End to End tests
+Before you run the End to End tests you need to download the mozilla geckodriver executable ([`here`](https://github.com/mozilla/geckodriver/releases)) and add it to your path. (In my case, I downloaded "geckodriver-v0.28.0-win64.zip", extracted the executable to a new geckodriver folder, and added the directory to the path).
+
+Then run the following command:
 ```bash
 $ pytest test_e2e.py       
 ```

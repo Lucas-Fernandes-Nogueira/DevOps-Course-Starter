@@ -5,6 +5,7 @@ from dotenv import find_dotenv, load_dotenv
 
 def create_app():
     app = Flask(__name__)
+    trello.load_all_list_ids()
 
     @app.route('/')
     def index():

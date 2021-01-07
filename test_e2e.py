@@ -47,10 +47,5 @@ def test_task_journey(driver, test_app):
 
     toDoItems = driver.find_elements_by_css_selector('.to-do-list li form')
 
-    counter = 0
-
-    for item in toDoItems:
-        if item.text == "test item":
-            counter += 1
-    
-    assert counter == 1
+    matching_items = [ item for item in toDoItems if item.text == "test item" ]
+    assert len(matching_items) == 1
