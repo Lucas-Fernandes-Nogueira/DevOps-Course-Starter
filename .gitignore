@@ -117,3 +117,7 @@ env/
 
 # VSCode folder
 .vscode
+
+#geckodriver binary
+geckodriver.exe
+geckodriver.log

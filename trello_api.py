@@ -2,20 +2,36 @@ import requests
 import os
 from copy import deepcopy
 from to_do_item import ToDoItem
-
-API_KEY = os.getenv('API_KEY')
-TOKEN = os.getenv('TOKEN')
-BOARD_ID = os.getenv('BOARD_ID')
-TO_DO_LIST_ID = os.getenv('TO_DO_LIST_ID')
-DONE_LIST_ID = os.getenv('DONE_LIST_ID')
-
-CREDENTIALS = { 'key': API_KEY, 'token': TOKEN }
+from to_do_item import Status
+from dotenv import find_dotenv, load_dotenv
 
 TRELLO_API_BASE_URL = 'https://api.trello.com/1'
+
+TO_DO_LIST_ID = None
+DOING_LIST_ID = None
+DONE_LIST_ID = None
+
+def load_to_do_list_id():
+    global TO_DO_LIST_ID
+    TO_DO_LIST_ID = get_list_id_by_name("To Do", os.getenv('BOARD_ID'))
+
+def load_doing_list_id():
+    global DOING_LIST_ID
+    DOING_LIST_ID = get_list_id_by_name("Doing", os.getenv('BOARD_ID'))
+
+def load_done_list_id():
+    global DONE_LIST_ID
+    DONE_LIST_ID = get_list_id_by_name("Done", os.getenv('BOARD_ID'))
+
+def load_all_list_ids():
+    load_to_do_list_id()
+    load_doing_list_id()
+    load_done_list_id()
 
 def get_items():
     items = []
     fetch_and_append_to_do_list_items(items)
+    fetch_and_append_doing_list_items(items)
     fetch_and_append_done_list_items(items)
     sort_items_by_id(items)
     return items
@@ -27,34 +43,67 @@ def get_item(id):
     items = get_items()
     return next((item for item in items if item.id == id), None)
 
-
 def add_item(title):
-    params = deepcopy(CREDENTIALS)
+    params = { 'key': os.getenv('API_KEY'), 'token': os.getenv('TOKEN') }
     params['name'] = title
     params['idList'] = TO_DO_LIST_ID
     requests.post(f'{TRELLO_API_BASE_URL}/cards', params=params)
 
 def toggle_status(item):
-    params = deepcopy(CREDENTIALS)
-    if (item.status == 'Completed'):
+    params = { 'key': os.getenv('API_KEY'), 'token': os.getenv('TOKEN') }
+    if (item.status == Status.DONE):
         params['idList'] = TO_DO_LIST_ID
-    else:
+    elif (item.status == Status.DOING):
         params['idList'] = DONE_LIST_ID
+    else:
+        params['idList'] = DOING_LIST_ID
     
     requests.put(f'{TRELLO_API_BASE_URL}/cards/{item.id}', params=params)
 
 def remove_item(item):
-    requests.delete(f'{TRELLO_API_BASE_URL}/cards/{item.id}', params=CREDENTIALS)
+    credentials = { 'key': os.getenv('API_KEY'), 'token': os.getenv('TOKEN') }
+    requests.delete(f'{TRELLO_API_BASE_URL}/cards/{item.id}', params=credentials)
 
 def sort_items_by_id(items):
     items.sort(key=get_id)
 
 def fetch_and_append_to_do_list_items(items):
-    r = requests.get(f'{TRELLO_API_BASE_URL}/lists/{TO_DO_LIST_ID}/cards', params=CREDENTIALS)
+    credentials = { 'key': os.getenv('API_KEY'), 'token': os.getenv('TOKEN') }
+    r = requests.get(f'{TRELLO_API_BASE_URL}/lists/{TO_DO_LIST_ID}/cards', params=credentials)
     for item in r.json():
-        items.append(ToDoItem.parse_json_not_started_item(item))
+        items.append(ToDoItem.parse_json_to_do_item(item))
+
+def fetch_and_append_doing_list_items(items):
+    credentials = { 'key': os.getenv('API_KEY'), 'token': os.getenv('TOKEN') }
+    r = requests.get(f'{TRELLO_API_BASE_URL}/lists/{DOING_LIST_ID}/cards', params=credentials)
+    for item in r.json():
+        items.append(ToDoItem.parse_json_doing_item(item))
 
 def fetch_and_append_done_list_items(items):
-    r = requests.get(f'{TRELLO_API_BASE_URL}/lists/{DONE_LIST_ID}/cards', params=CREDENTIALS)
+    credentials = { 'key': os.getenv('API_KEY'), 'token': os.getenv('TOKEN') }
+    r = requests.get(f'{TRELLO_API_BASE_URL}/lists/{DONE_LIST_ID}/cards', params=credentials)
     for item in r.json():
-        items.append(ToDoItem.parse_json_completed_item(item))
+        items.append(ToDoItem.parse_json_done_item(item))
+
+def create_board(board_name):
+    params = { 'key': os.getenv('API_KEY'), 'token': os.getenv('TOKEN'), 'name': board_name }
+    response = requests.post(f'{TRELLO_API_BASE_URL}/boards/', params=params)
+    return response.json()["id"]
+
+def delete_board(board_id):
+    credentials = { 'key': os.getenv('API_KEY'), 'token': os.getenv('TOKEN') }
+    requests.delete(f'{TRELLO_API_BASE_URL}/boards/{board_id}', params=credentials)
+
+def get_lists(board_id):
+    credentials = { 'key': os.getenv('API_KEY'), 'token': os.getenv('TOKEN') }
+    r = requests.get(f'{TRELLO_API_BASE_URL}/boards/{board_id}/lists', params=credentials)
+    lists = []
+    for item in r.json():
+        lists.append({"id": item["id"], "name": item["name"]})
+    return lists
+
+def get_list_id_by_name(list_name, board_id):
+    lists = get_lists(board_id)
+    board_list = next((item for item in lists if item["name"] == list_name))
+    return board_list["id"]
+

@@ -8,10 +8,10 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12">
-      <h2>Items</h2>
-      <ul class="list-group mb-4">
-        {% for item in items %}
+    <div class="col-md">
+      <ul class="list-group mb-4 items-list to-do-list">
+        <h2>To Do</h2>
+        {% for item in viewModel.to_do_items %}
           <li style="list-style-type: none;">
             <form action="{{url_for('removeItem')}}" method="POST" style="display: inline;">
               <input type="hidden" id="id" name="id" value={{item.id}} />
@@ -22,10 +22,10 @@
             <form action="{{url_for('toggleStatus')}}" method="POST" style="display: inline;">
               <input type="hidden" id="id" name="id" value={{item.id}} />
               <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
-                {% if item.status == 'Completed' %} 
-                  <i class="far fa-check-square"></i>
-                {% else %}
+                {% if item.isTodo() %}
                   <i class="far fa-square"></i>
+                {% else %}
+                  <div class="error-message">There was an error loading this task's status.</div>
                 {% endif %}
               </button>
               {{ item.title }}
@@ -36,6 +36,106 @@
           <button type="submit"  style="background-color:rgba(0, 0, 0, 0);"><i class="fas fa-plus"></i></button>
           <input type="text" id="title" name="title" required>
         </form>
+      </ul>
+    </div>
+    <div class="col-md">
+      <ul class="list-group mb-4 items-list">
+        <h2>Doing</h2>
+        {% for item in viewModel.doing_items %}
+          <li style="list-style-type: none;">
+            <form action="{{url_for('removeItem')}}" method="POST" style="display: inline;">
+              <input type="hidden" id="id" name="id" value={{item.id}} />
+              <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
+                <i class="fas fa-trash-alt" style="color:red;"></i>
+              </button>
+            </form>
+            <form action="{{url_for('toggleStatus')}}" method="POST" style="display: inline;">
+              <input type="hidden" id="id" name="id" value={{item.id}} />
+              <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
+                {% if item.isDoing() %} 
+                  <i class="fas fa-spinner"></i>
+                {% else %}
+                  <div class="error-message">There was an error loading this task's status.</div>
+                {% endif %}
+              </button>
+              {{ item.title }}
+            </form>
+          </li>         
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-md">
+      <ul class="list-group mb-4 items-list">
+        <h2>Done</h2>
+        {% if viewModel.done_items|length < 5 %}
+          {% for item in viewModel.done_items %}
+            <li style="list-style-type: none;">
+              <form action="{{url_for('removeItem')}}" method="POST" style="display: inline;">
+                <input type="hidden" id="id" name="id" value={{item.id}} />
+                <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
+                  <i class="fas fa-trash-alt" style="color:red;"></i>
+                </button>
+              </form>
+              <form action="{{url_for('toggleStatus')}}" method="POST" style="display: inline;">
+                <input type="hidden" id="id" name="id" value={{item.id}} />
+                <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
+                  {% if item.isDone() %} 
+                    <i class="far fa-check-square"></i>
+                  {% else %}
+                    <div class="error-message">There was an error loading this task's status.</div>
+                  {% endif %}
+                </button>
+                {{ item.title }}
+              </form>
+            </li>         
+          {% endfor %}
+        {% else %}
+          <details>
+            <summary>View all</summary>
+            {% for item in viewModel.older_done_items %}
+              <li style="list-style-type: none;">
+                <form action="{{url_for('removeItem')}}" method="POST" style="display: inline;">
+                  <input type="hidden" id="id" name="id" value={{item.id}} />
+                  <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
+                    <i class="fas fa-trash-alt" style="color:red;"></i>
+                  </button>
+                </form>
+                <form action="{{url_for('toggleStatus')}}" method="POST" style="display: inline;">
+                  <input type="hidden" id="id" name="id" value={{item.id}} />
+                  <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
+                    {% if item.isDone() %} 
+                      <i class="far fa-check-square"></i>
+                    {% else %}
+                      <div class="error-message">There was an error loading this task's status.</div>
+                    {% endif %}
+                  </button>
+                  {{ item.title }}
+                </form>
+              </li>
+            {% endfor %}
+          </details>   
+          {% for item in viewModel.recent_done_items %}
+            <li style="list-style-type: none;">
+              <form action="{{url_for('removeItem')}}" method="POST" style="display: inline;">
+                <input type="hidden" id="id" name="id" value={{item.id}} />
+                <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
+                  <i class="fas fa-trash-alt" style="color:red;"></i>
+                </button>
+              </form>
+              <form action="{{url_for('toggleStatus')}}" method="POST" style="display: inline;">
+                <input type="hidden" id="id" name="id" value={{item.id}} />
+                <button type="submit" style="border: none; background-color:rgba(0, 0, 0, 0);">
+                  {% if item.isDone() %} 
+                    <i class="far fa-check-square"></i>
+                  {% else %}
+                    <div class="error-message">There was an error loading this task's status.</div>
+                  {% endif %}
+                </button>
+                {{ item.title }}
+              </form>
+            </li>         
+          {% endfor %}
+        {% endif %}
       </ul>
     </div>
   </div>
