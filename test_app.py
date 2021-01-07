@@ -6,7 +6,11 @@ import requests
 from mock_trello_get_response import mock_trello_response
 
 @pytest.fixture
-def client():
+def client(monkeypatch):
+    def mock_get_requests(*args, **kwards):
+        return MockListsResponse()
+    monkeypatch.setattr(requests, 'get', mock_get_requests)
+    
     # Use our test integration config instead of the 'real' version
     file_path = find_dotenv('.env.test')
     load_dotenv(file_path, override=True)
@@ -23,21 +27,22 @@ class MockCardsResponse:
     def json():
         return mock_trello_response
 
-class MockListsReponse:
+class MockListsResponse:
     @staticmethod
     def json():
         return [{"id": 1, "name": "To Do"}, {"id": 2, "name": "Doing"}, {"id": 3, "name": "Done"}]
 
 def test_index_page(client, monkeypatch):
-    # when
+    # given
     def mock_get_requests(*args, **kwargs):
         if "cards" in args[0]:
             return MockCardsResponse()
         elif "lists" in args[0]:
-            return MockListsReponse()
+            return MockListsResponse()
 
-    # given
     monkeypatch.setattr(requests, 'get', mock_get_requests)
+
+    # when
     response = client.get('/')
 
     # then

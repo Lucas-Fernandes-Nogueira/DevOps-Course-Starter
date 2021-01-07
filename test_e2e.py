@@ -17,6 +17,9 @@ def driver():
 
 @pytest.fixture(scope='module')
 def test_app():
+    file_path = find_dotenv('.env')
+    load_dotenv(file_path, override=True)
+
     # Create the new board & update the board id environment variable
     board_id = trello_api.create_board("Test Board")
     os.environ['BOARD_ID'] = board_id 
@@ -44,10 +47,5 @@ def test_task_journey(driver, test_app):
 
     toDoItems = driver.find_elements_by_css_selector('.to-do-list li form')
 
-    counter = 0
-
-    for item in toDoItems:
-        if item.text == "test item":
-            counter += 1
-    
-    assert counter == 1
+    matching_items = [ item for item in toDoItems if item.text == "test item" ]
+    assert len(matching_items) == 1

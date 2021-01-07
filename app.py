@@ -1,16 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for
 import trello_api as trello
 from viewModels.indexViewModel import IndexViewModel
+from dotenv import find_dotenv, load_dotenv
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object('flask_config.Config')
+    trello.load_all_list_ids()
 
     @app.route('/')
     def index():
         items = trello.get_items()
-        indexViewModel = IndexViewModel(items, False)
-        return render_template('index.html', viewModel=indexViewModel)
+        index_view_model = IndexViewModel(items, False)
+        return render_template('index.html', viewModel=index_view_model)
 
     @app.route('/new-item', methods=['POST'])
     def addItem():
@@ -21,8 +22,8 @@ def create_app():
 
     @app.route('/toggle-status', methods=['POST'])
     def toggleStatus():
-        itemId = request.form.get('id')
-        item = trello.get_item(itemId)
+        item_id = request.form.get('id')
+        item = trello.get_item(item_id)
 
         trello.toggle_status(item)
 
@@ -30,12 +31,14 @@ def create_app():
 
     @app.route('/remove-item', methods=['POST'])
     def removeItem():
-        itemId = request.form.get('id')
-        item = trello.get_item(itemId)
+        item_id = request.form.get('id')
+        item = trello.get_item(item_id)
         trello.remove_item(item)
         return redirect(url_for('index'))
     
     return app
 
 if __name__ == '__main__':
+    file_path = find_dotenv('.env')
+    load_dotenv(file_path, override=True)
     create_app().run()
