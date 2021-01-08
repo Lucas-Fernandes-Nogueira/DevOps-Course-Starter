@@ -5,18 +5,17 @@
 The project uses poetry for Python to create an isolated environment and manage package dependencies. To prepare your system, ensure you have an official distribution of Python version 3.7+ and install poetry using one of the following commands (as instructed by the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
 
 ### Poetry installation (Bash)
-### Setup .env file
-1. Make a copy of .env.template in the root folder and rename it to .env
-2. Fill in the API_KEY, TOKEN, and BOARD_ID with your Trello account credentials and Board id. (you can generate these credentials by going to https://trello.com/app-key)
-
-Note: Your trello board should contain three lists with the names "To Do", "Doing" and "Done".
-
-### Install dependencies
-The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from a bash shell terminal:
-
 ```bash
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 ```
+### Setup .env file
+1. Make a copy of .env.template in the root folder and rename it to .env (this is a one-time operation on first setup).
+    ```bash
+    $ cp .env.template .env  # (first time only)
+    ```
+    The `.env` file is used by flask to set environment variables when running `flask run`. In the next step you'll set the required variables.
+
+2. Fill in the API_KEY, TOKEN, and BOARD_ID with your Trello account credentials and Board id. (you can generate these credentials by going to https://trello.com/app-key)
 
 ## Dependencies
 
@@ -25,14 +24,6 @@ The project uses a virtual environment to isolate package dependencies. To creat
 ```bash
 $ poetry install
 ```
-
-You'll also need to clone a new `.env` file from the `.env.template` to store local configuration options. This is a one-time operation on first setup:
-
-```bash
-$ cp .env.template .env  # (first time only)
-```
-
-The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie.
 
 ## Running the App
 
