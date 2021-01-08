@@ -1,28 +1,35 @@
 # DevOps Apprenticeship: Project Exercise
 
-## Getting started
+## System Requirements
 
+The project uses poetry for Python to create an isolated environment and manage package dependencies. To prepare your system, ensure you have an official distribution of Python version 3.7+ and install poetry using one of the following commands (as instructed by the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
+
+### Poetry installation (Bash)
+```bash
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+```
 ### Setup .env file
-1. Make a copy of .env.template in the root folder and rename it to .env
+1. Make a copy of .env.template in the root folder and rename it to .env (this is a one-time operation on first setup).
+    ```bash
+    $ cp .env.template .env  # (first time only)
+    ```
+    The `.env` file is used by flask to set environment variables when running `flask run`. In the next step you'll set the required variables.
+
 2. Fill in the API_KEY, TOKEN, and BOARD_ID with your Trello account credentials and Board id. (you can generate these credentials by going to https://trello.com/app-key)
 
-Note: Your trello board should contain three lists with the names "To Do", "Doing" and "Done".
+## Dependencies
 
-### Install dependencies
-The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from a bash shell terminal:
+The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from your preferred shell:
 
-### On macOS and Linux
 ```bash
-$ source setup.sh
-```
-### On Windows (Using Git Bash)
-```bash
-$ source setup.sh --windows
+$ poetry install
 ```
 
-Once the setup script has completed and all packages have been installed, start the Flask app by running:
+## Running the App
+
+Once all dependencies have been installed, start the Flask app in development mode within the poetry environment by running:
 ```bash
-$ flask run
+$ poetry run flask run
 ```
 
 You should see output similar to the following:
@@ -37,6 +44,12 @@ You should see output similar to the following:
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
+## Running the Virtual Machine
+If you have Vagrant installed in your machine, provision and run a virtual machine with the command:
+```bash
+$ vagrant up
+```
+This will automatically launch the app, which you can also view in your [`browser`](http://localhost:5000/).
 ## Run the Tests
 If you want to run all tests, use the following command:
 ```bash
