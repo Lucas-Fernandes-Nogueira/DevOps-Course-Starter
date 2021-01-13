@@ -1,0 +1,30 @@
+#python cache 
+__pycache__/
+.pytest_cache/
+
+#VSCode folder
+.vscode
+
+#configuration files
+.env
+.env.template
+
+#gitignore
+.gitignore
+
+#docker
+Dockerfile
+
+#geckodriver
+geckodriver.log
+
+#documentation
+README.md
+
+#vagrant
+.vagrant
+Vagrantfile
+
+
+
+
