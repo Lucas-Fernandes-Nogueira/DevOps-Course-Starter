@@ -74,17 +74,29 @@ Then run the website with the following:
 docker run -p 5000:5000 --env-file .env todo-app:prod
 ```
 Now visit http://localhost:5000/ in your web browser to view the app.
+### Test
+To run in test mode, first build the image with the following command:
+```bash
+docker build --target test --tag todo-app:test .
+```
+Then run the tests with the following commands:
+#### Unit tests
+```bash
+docker run --env-file .env todo-app:test test_indexViewModel.py
+```
+#### Integration tests
+```bash
+docker run --env-file .env todo-app:test test_app.py 
+```
+#### End to end tests
+```bash
+docker run --env-file .env todo-app:test test_e2e.py
+```
 ### Other Useful commands
 Stop all running containers:
 ```bash
 docker stop $(docker ps -a -q)
 ```
-
-
-
-
-
-
 ## Run the Tests
 If you want to run all tests, use the following command:
 ```bash
@@ -102,9 +114,6 @@ $ pytest test_indexViewModel.py
 $ pytest test_app.py    
 ```
 ### End to End tests
-Before you run the End to End tests you need to download the mozilla geckodriver executable ([`here`](https://github.com/mozilla/geckodriver/releases)) and add it to your path. (In my case, I downloaded "geckodriver-v0.28.0-win64.zip", extracted the executable to a new geckodriver folder, and added the directory to the path).
-
-Then run the following command:
 ```bash
 $ pytest test_e2e.py       
 ```

@@ -15,8 +15,8 @@ __pycache__/
 #docker
 Dockerfile
 
-#geckodriver
-geckodriver.log
+#chromedriver
+chromedriver.exe
 
 #documentation
 README.md
@@ -24,6 +24,9 @@ README.md
 #vagrant
 .vagrant
 Vagrantfile
+
+#travis
+.travis.yml
 
 
 
