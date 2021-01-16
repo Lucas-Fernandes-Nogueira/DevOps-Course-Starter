@@ -82,11 +82,11 @@ docker build --target test --tag todo-app:test .
 Then run the tests with the following commands:
 #### Unit tests
 ```bash
-docker run --env-file .env todo-app:test test_indexViewModel.py
+docker run todo-app:test test_indexViewModel.py
 ```
 #### Integration tests
 ```bash
-docker run --env-file .env todo-app:test test_app.py 
+docker run todo-app:test test_app.py 
 ```
 #### End to end tests
 ```bash

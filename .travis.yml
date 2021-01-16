@@ -1,2 +1,4 @@
 script:
-- docker build --target production --tag todo-app:prod .
+- docker build --target test --tag todo-app:test .
+- docker run todo-app:test test_indexViewModel.py
+- docker run todo-app:test test_app.py
