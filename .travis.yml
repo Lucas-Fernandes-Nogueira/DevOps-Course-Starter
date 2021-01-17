@@ -1,3 +1,5 @@
+services:
+  - docker
 env:
   global:
   - BOARD_ID=5ef102923967ff06c7504e0a
