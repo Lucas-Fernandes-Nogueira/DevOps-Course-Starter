@@ -22,7 +22,8 @@ def driver():
 @pytest.fixture(scope='module')
 def test_app():
     file_path = find_dotenv('.env')
-    load_dotenv(file_path, override=True)
+    if file_path:
+        load_dotenv(file_path, override=True)
 
     # Create the new board & update the board id environment variable
     board_id = trello_api.create_board("Test Board")
