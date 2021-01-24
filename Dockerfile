@@ -6,7 +6,7 @@ EXPOSE 5000
 FROM base as production
 COPY . /todo-app
 RUN poetry config virtualenvs.create false --local && poetry install --no-dev
-CMD poetry run gunicorn --bind=0.0.0.0:5000 "app:create_app()"
+CMD poetry run gunicorn --bind=0.0.0.0:$port "app:create_app()"
 
 FROM base as development
 COPY poetry.lock /todo-app
