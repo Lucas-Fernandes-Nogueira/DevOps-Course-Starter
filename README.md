@@ -61,7 +61,7 @@ docker build --target development --tag todo-app:dev .
 ```
 After you've built the image, run the website with the following command:
 ```bash
-docker run -p 5000:5000 --env-file .env --mount type=bind,source="$(pwd)",destination=/todo-app todo-app:dev
+docker run -p 5000:5000 --mount type=bind,source="$(pwd)",destination=/todo-app todo-app:dev
 ```
 Now visit http://localhost:5000/ in your web browser to view the app.
 ### Production
@@ -107,15 +107,16 @@ If you want to run the test suits individually, you just need to run the appropr
 
 ### Unit Tests
 ```bash
-$ pytest test_indexViewModel.py
+$ poetry run pytest test_indexViewModel.py
 ```
 ### Integration Tests
 ```bash
-$ pytest test_app.py    
+$ poetry run pytest test_app.py    
 ```
 ### End to End tests
+You need to install Chrome and chromedriver.exe to run the e2e tests. Add chromedriver.exe to your path.
 ```bash
-$ pytest test_e2e.py       
+$ poetry run pytest test_e2e.py       
 ```
 
 ## Common issues and Gotchas
