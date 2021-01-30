@@ -9,6 +9,6 @@ env:
   - secure: "ftig8aPk8avtgzOJUHkt5aQm6iwjC1gYtxPBIVO2fnjCXqfes1HzYEKJeygO7v9BTJ1fa5k4BX0hH09waKD23eLq3+U83DlfO8pbM0jVFoO3qc8YwUYF2MDaUIDvjWv05gI5mpHCeorYnp9FjBOKeaSbEbZuxO9p/54xyrFe3tXrBzv3OFYLzbjw+6NH8sXWsLIiF8oBZolLrPp14fpzIC4hd5ogpP3OqHtnKGkm/gDhQct+pl72laBT/GuWpcf0ul/te5WLfo1SJXuGZpi5xCvWL25u/HCGVx1HGwJWtRLK77dsVpPYOnzmz6HnJ990CYu+og4s/5LQzWDvx1TdOMlYy1k5BWRBJyF2cvc91SBl0uK7grkWS4pKSn0QM0zhEc7JtrdwuebflxjinLC1T3o2MWg8bwbtCKyvKTG9ZdVtKKdgY6FdEt91AUlE7DtglwtstAMUnkfeHeQRIHIlLvptsAwoFZxHOh0uiVM3h7hpMl41eElKuFivwi0P2TDcKuNCg4ZCgL1Styryust98e8qBXAttVDgvJf76Hbn7vPWMP59gYjrBvrvng1DYgwXVgS7Pf/JkO1DvDozSk9Ll1Q/yoNXj4WRimXuCzuRb4yb/u4QL3Az7iDdStC/JMyI6as3ZrwsIDMf7JmW7f7XTEpb0YCOdBIEE08mfpP/ByE="
 script:
 - docker build --target test --tag todo-app:test .
-- docker run -e API_KEY=$API_KEY -e TOKEN=$TOKEN -e BOARD_ID=$BOARD_ID -e FLASK_APP=$FLASK_APP -e FLASK_ENV=$FLASK_ENV todo-app:test test_e2e.py
+- docker run -e API_KEY=$API_KEY -e TOKEN=$TOKEN -e FLASK_APP=$FLASK_APP -e FLASK_ENV=$FLASK_ENV todo-app:test test_e2e.py
 - docker run todo-app:test test_app.py
 - docker run todo-app:test test_indexViewModel.py

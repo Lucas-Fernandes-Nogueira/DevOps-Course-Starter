@@ -107,15 +107,16 @@ If you want to run the test suits individually, you just need to run the appropr
 
 ### Unit Tests
 ```bash
-$ pytest test_indexViewModel.py
+$ poetry run pytest test_indexViewModel.py
 ```
 ### Integration Tests
 ```bash
-$ pytest test_app.py    
+$ poetry run pytest test_app.py    
 ```
 ### End to End tests
+You need to install Chrome and chromedriver.exe to run the e2e tests. Add chromedriver.exe to your path.
 ```bash
-$ pytest test_e2e.py       
+$ poetry run pytest test_e2e.py       
 ```
 
 ## Common issues and Gotchas
