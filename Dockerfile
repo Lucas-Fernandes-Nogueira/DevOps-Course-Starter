@@ -4,8 +4,11 @@ WORKDIR /todo-app
 EXPOSE 5000
 
 FROM base as production
-COPY . /todo-app
+COPY poetry.toml /todo-app
+COPY poetry.lock /todo-app
+COPY pyproject.toml /todo-app
 RUN poetry config virtualenvs.create false && poetry install --no-dev
+COPY . /todo-app
 CMD poetry run gunicorn --bind=0.0.0.0:5000 "app:create_app()"
 
 FROM base as development
