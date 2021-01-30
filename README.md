@@ -50,6 +50,41 @@ If you have Vagrant installed in your machine, provision and run a virtual machi
 $ vagrant up
 ```
 This will automatically launch the app, which you can also view in your [`browser`](http://localhost:5000/).
+
+## Running with Docker
+### Dev
+In developer mode, Flask tracks changes to the files in the codebase. You should see the changes after a simple tab refresh, without the need to rebuild the docker image.
+
+To run in developer mode, first build the docker image with the following command from the project directory:
+```bash
+docker build --target development --tag todo-app:dev .
+```
+After you've built the image, run the website with the following command:
+```bash
+docker run -p 5000:5000 --mount type=bind,source="$(pwd)",destination=/todo-app todo-app:dev
+```
+Now visit http://localhost:5000/ in your web browser to view the app.
+### Production
+To run in production mode, first build the image with the following command:
+```bash
+docker build --target production --tag todo-app:prod .
+```
+Then run the website with the following:
+```bash
+docker run -p 5000:5000 --env-file .env todo-app:prod
+```
+Now visit http://localhost:5000/ in your web browser to view the app.
+### Other Useful commands
+Stop all running containers:
+```bash
+docker stop $(docker ps -a -q)
+```
+
+
+
+
+
+
 ## Run the Tests
 If you want to run all tests, use the following command:
 ```bash
@@ -79,3 +114,4 @@ $ pytest test_e2e.py
     * To Do
     * Doing
     * Done
+
