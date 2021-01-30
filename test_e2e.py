@@ -12,13 +12,18 @@ from selenium import webdriver
 
 @pytest.fixture(scope="module")
 def driver():
- with webdriver.Firefox() as driver:
-     yield driver
+    opts = webdriver.ChromeOptions()
+    opts.add_argument('--headless')
+    opts.add_argument('--no-sandbox')
+    opts.add_argument('--disable-dev-shm-usage')
+    with webdriver.Chrome('./chromedriver', options=opts) as driver:
+        yield driver
 
 @pytest.fixture(scope='module')
 def test_app():
     file_path = find_dotenv('.env')
-    load_dotenv(file_path, override=True)
+    if file_path:
+        load_dotenv(file_path, override=True)
 
     # Create the new board & update the board id environment variable
     board_id = trello_api.create_board("Test Board")
