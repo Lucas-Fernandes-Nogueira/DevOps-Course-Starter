@@ -3,7 +3,6 @@ from dotenv import find_dotenv, load_dotenv
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 import requests
-from mock_trello_get_response import mock_trello_response
 import os
 from threading import Thread
 import mongo_api as mongo
