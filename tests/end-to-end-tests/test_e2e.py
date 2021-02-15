@@ -6,7 +6,7 @@ import requests
 from mock_trello_get_response import mock_trello_response
 import os
 from threading import Thread
-import trello_api
+import mongo_api as mongo
 from selenium import webdriver
 
 
@@ -26,8 +26,7 @@ def test_app():
         load_dotenv(file_path, override=True)
 
     # Create the new board & update the board id environment variable
-    board_id = trello_api.create_board("Test Board")
-    os.environ['BOARD_ID'] = board_id 
+    os.environ["DATABASE"] = "test-todo-app"
 
     # construct the new application
     application = app.create_app()
@@ -38,7 +37,12 @@ def test_app():
     yield app
     # Tear Down
     thread.join(1)
-    trello_api.delete_board(board_id)
+    mongo_api = mongo.MongoApi(
+        os.getenv('MONGO_USERNAME'),
+        os.getenv('MONGO_PASSWORD'),
+        os.getenv('MONGO_URL'),
+        "test-todo-app")
+    mongo_api.delete_database("test-todo-app")
 
 def test_task_journey(driver, test_app):
     driver.get('http://localhost:5000/')
