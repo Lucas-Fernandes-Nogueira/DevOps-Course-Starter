@@ -12,9 +12,9 @@ env:
   - secure: "SMQR+WxtSViJ5NvERGMLAa3Saend7ReSA2BcPxu9HIWsDILa+J7Iqa2jK40SMzCUH/gOFMpCfvoarKZxPWiHQ1kms9LKTl5dVx6/OcGWTdfUq0G7xncpGxTL2NTygE2gJojXOCUlq0qhoCl3nCBKRBBhCcuiceDq75sBcVCziB50pdPjW5DemnPn22O3wo/aqPA/eadDw8eXm/RXzvdFnIoBKpaaM/3qqloLvBu3uzHpjEdxZ6jLEcvgJyoJHZq/LlnkbEM36+1pF8yZXtoPjYnWZOwT5lxollw2w6ipIQkwsLiMA4F7UufsId3hZWKslybft6GXDMF1ayZ7oU/nP7mS5YyChlWlxflVEhNvmQXSw8CxZ7Haiz5Mn2HOo/hhRG6j43VeLkcM7hH6xkskfYbIuRCCEi6AGK2dCczz4jke91iyYkXLHC8/fCWLTOhQAgE8/ifeh97koP1gs0V6VeLogdbKvyUMbV1ATc3DaPHHWerNOHj/K1A7kRLJAY9+SPPUle1haErlaLVTmvbmyZP60JBTEl+Pv+I9ynhPyap+L0XNq2gXREtkjAzGRbdbTn1XYNOzdnqcgi461czZFhfSgI6b4bvkX++kXsWwu66SMw66/Fr9ayphbzHT1yCD2ZAG+NKYEPthY43p0+BlVB8keZ8t0g15Kjhda2njh1s="
 script:
   - docker build --target test --tag todo-app:test .
-  - docker run -e API_KEY=$API_KEY -e TOKEN=$TOKEN -e FLASK_APP=$FLASK_APP -e FLASK_ENV=$FLASK_ENV todo-app:test test_e2e.py
-  - docker run todo-app:test test_app.py
-  - docker run todo-app:test test_indexViewModel.py
+  - docker run -e API_KEY=$API_KEY -e TOKEN=$TOKEN -e FLASK_APP=$FLASK_APP -e FLASK_ENV=$FLASK_ENV todo-app:test tests/end-to-end-tests
+  - docker run todo-app:test tests/integration-tests
+  - docker run todo-app:test tests/unit-tests
 deploy:
   provider: script
   script: bash deploy.sh
