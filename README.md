@@ -15,7 +15,7 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poet
     ```
     The `.env` file is used by flask to set environment variables when running `flask run`. In the next step you'll set the required variables.
 
-2. Fill in the API_KEY, TOKEN, and BOARD_ID with your Trello account credentials and Board id. (you can generate these credentials by going to https://trello.com/app-key)
+2. Fill in the API_KEY, TOKEN, and BOARD_ID with your Trello account credentials and Board id. (you can generate these credentials by going to https://trello.com/app-key). Set the PORT variable to 5000.
 
 ## Dependencies
 

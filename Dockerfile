@@ -7,9 +7,9 @@ COPY poetry.lock /todo-app
 COPY pyproject.toml /todo-app
 
 FROM base as production
-RUN poetry config virtualenvs.create false && poetry install --no-dev
+RUN poetry config virtualenvs.create false --local && poetry install --no-dev
 COPY . /todo-app
-CMD poetry run gunicorn --bind=0.0.0.0:5000 "app:create_app()"
+CMD poetry run gunicorn --bind=0.0.0.0:$PORT "app:create_app()"
 
 FROM base as development
 RUN poetry config virtualenvs.create false && poetry install
