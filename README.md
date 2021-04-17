@@ -15,7 +15,7 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poet
     ```
     The `.env` file is used by flask to set environment variables when running `flask run`. In the next step you'll set the required variables.
 
-2. Fill in the API_KEY, TOKEN, and BOARD_ID with your Trello account credentials and Board id. (you can generate these credentials by going to https://trello.com/app-key). Set the PORT variable to 5000.
+2. Fill in the MONGO_USERNAME, MONGO_PASSWORD, MONGO_URL and DATABASE with your MongoDb account credentials and config. Set the PORT variable to 5000.
 
 ## Dependencies
 
@@ -82,15 +82,15 @@ docker build --target test --tag todo-app:test .
 Then run the tests with the following commands:
 #### Unit tests
 ```bash
-docker run todo-app:test test_indexViewModel.py
+docker run tests/unit-tests
 ```
 #### Integration tests
 ```bash
-docker run todo-app:test test_app.py 
+docker run todo-app:test tests/integration-tests
 ```
 #### End to end tests
 ```bash
-docker run --env-file .env todo-app:test test_e2e.py
+docker run --env-file .env todo-app:test tests/end-to-end-tests
 ```
 ### Other Useful commands
 Stop all running containers:
@@ -107,21 +107,15 @@ If you want to run the test suits individually, you just need to run the appropr
 
 ### Unit Tests
 ```bash
-$ poetry run pytest test_indexViewModel.py
+$ poetry run pytest tests/unit-tests
 ```
 ### Integration Tests
 ```bash
-$ poetry run pytest test_app.py    
+$ poetry run pytest tests/integration-tests
 ```
 ### End to End tests
 You need to install Chrome and chromedriver.exe to run the e2e tests. Add chromedriver.exe to your path.
 ```bash
-$ poetry run pytest test_e2e.py       
+$ poetry run pytest tests/end-to-end-tests
 ```
-
-## Common issues and Gotchas
-1. The Trello board should contain three lists with the following names:
-    * To Do
-    * Doing
-    * Done
 
