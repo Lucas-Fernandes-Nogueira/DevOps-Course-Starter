@@ -38,7 +38,6 @@ def client(monkeypatch):
 def test_index_page(client, monkeypatch):
     # when
     response = client.get('/')
-    print(response.data)
 
     # then
     assert "Task 1" in str(response.data)

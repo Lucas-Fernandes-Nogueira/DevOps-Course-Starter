@@ -96,16 +96,13 @@ class MongoApi:
             items.append(ToDoItem.parse_json_done_item(item))
 
 
-    def create_database(self, database_name):
-        return self._client[database_name]
-
-
     def delete_database(self, database_name):
         self._client.drop_database(database_name)
 
 
     def get_lists(self):
         return self.db.list_collection_names()
+
 
     def get_time_string_now(self):
         return datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%fZ')

@@ -6,7 +6,7 @@ import os
 
 def create_app():
     app = Flask(__name__)
-    mongoApi = mongo.MongoApi(
+    storage = mongo.MongoApi(
         os.getenv('MONGO_USERNAME'),
         os.getenv('MONGO_PASSWORD'),
         os.getenv('MONGO_URL'),
@@ -14,7 +14,7 @@ def create_app():
 
     @app.route('/')
     def index():
-        items = mongoApi.get_items()
+        items = storage.get_items()
         index_view_model = IndexViewModel(items, False)
         return render_template('index.html', viewModel=index_view_model)
 
@@ -22,22 +22,22 @@ def create_app():
     def addItem():
         title = request.form.get('title')
         if title:
-            mongoApi.add_item(title)
+            storage.add_item(title)
         return redirect(url_for('index'))
 
     @app.route('/toggle-status', methods=['POST'])
     def toggleStatus():
         item_id = request.form.get('id')
-        item = mongoApi.get_item(item_id)
-        mongoApi.toggle_status(item)
+        item = storage.get_item(item_id)
+        storage.toggle_status(item)
 
         return redirect(url_for('index'))
 
     @app.route('/remove-item', methods=['POST'])
     def removeItem():
         item_id = request.form.get('id')
-        item = mongoApi.get_item(item_id)
-        mongoApi.remove_item(item)
+        item = storage.get_item(item_id)
+        storage.remove_item(item)
         return redirect(url_for('index'))
 
     return app
