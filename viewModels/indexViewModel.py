@@ -2,9 +2,10 @@ from to_do_item import Status
 import datetime
 
 class IndexViewModel:
-    def __init__(self, items, show_all_done_items):
+    def __init__(self, items, show_all_done_items, user_has_writer_role):
         self._items = items
         self._show_all_done_items = show_all_done_items
+        self._user_has_writer_role = user_has_writer_role
 
     @property
     def items(self):
@@ -35,3 +36,7 @@ class IndexViewModel:
     def older_done_items(self):
         date_today = datetime.datetime.now().date()
         return list(filter(lambda item: item.date_last_activity.date() < date_today, self.done_items))
+    
+    @property
+    def user_has_writer_role(self):
+        return self._user_has_writer_role
