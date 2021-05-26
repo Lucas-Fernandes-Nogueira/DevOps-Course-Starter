@@ -5,15 +5,14 @@ env:
   - DOCKER_ID=lucnog
   - FLASK_APP=app
   - FLASK_ENV=development
-  - MONGO_USERNAME=todo-app
-  - MONGO_URL=todo-app.libtc.mongodb.net
-  - DATABASE=todo-app
+  - DATABASE_NAME=todo-app
+  - DATABASE_URL=mongodb://luc-nog-cosmosdb-account:NohUozJf6vhxjVNrHpy5X5myzHpp5uHaPSizJ7QEZE1utONM8FVpQXeocgzTMXa2mYzBDeXCgFEKDmzMLgGBnA==@luc-nog-cosmosdb-account.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@luc-nog-cosmosdb-account@
   - secure: "Rm34yAkJplhsvsd0Wc6kI/0fASwx1jbNX8GQ7EeHU2W+C63i3jtm/yo76YtSqNiL6Ikf0FZNKKWNAz5csc+tE0MmEDDss+QnDvdmBGW02VLplOcruwNwT5lX/iFc8rMqfVtO/06kWQNgi831mggqB7ZfcXeJqxuc7tiXG7gOnm7kbd3OCQcY9xtdoHnxh1Tc55miSUPi/tsF44aM1b/2RjjZA27ECM2HBM9KV5qqPCwQ5Qw6tZ7g7iWyV1V1T7Xeqqx7S8x1CeNx1dDRR24bcm25n06bVhs+XBMz8TdXMXfujAEVilSoEXh0TvAzIr53SCRUUR2WHKKUDukdGPGad9ErcFjZU41gwTlY+X9VH8T3mnVHfA234KF/o5JppdFV2S7xzp8E9CYX9iuhXzbDbJsDh4dgpAB90r9EHrLVzzrETy9BkfRw01OQQsfo8B36Fa+X46JT2nwId+2pe1K93w3MSldAA4/jZcGvIA6UNhf61J2tTHYqU65n37HOGI5o0SBlh4QcmT7D5UAaT/KdOJOAb+hvqON9E3YXpvprzc1cexfdYvq75GP+SNajnL+okWxduy6MhjZcg2AAgJ1/XlsMfs6AJApbTA3TjGlwALAhgBg/ZK4Yk3vGVd4iwUvsSnxNd8NB6Evq5yOqgfcUtw3I71ERIzGQTuIdytqN9bQ="
   - secure: "SMQR+WxtSViJ5NvERGMLAa3Saend7ReSA2BcPxu9HIWsDILa+J7Iqa2jK40SMzCUH/gOFMpCfvoarKZxPWiHQ1kms9LKTl5dVx6/OcGWTdfUq0G7xncpGxTL2NTygE2gJojXOCUlq0qhoCl3nCBKRBBhCcuiceDq75sBcVCziB50pdPjW5DemnPn22O3wo/aqPA/eadDw8eXm/RXzvdFnIoBKpaaM/3qqloLvBu3uzHpjEdxZ6jLEcvgJyoJHZq/LlnkbEM36+1pF8yZXtoPjYnWZOwT5lxollw2w6ipIQkwsLiMA4F7UufsId3hZWKslybft6GXDMF1ayZ7oU/nP7mS5YyChlWlxflVEhNvmQXSw8CxZ7Haiz5Mn2HOo/hhRG6j43VeLkcM7hH6xkskfYbIuRCCEi6AGK2dCczz4jke91iyYkXLHC8/fCWLTOhQAgE8/ifeh97koP1gs0V6VeLogdbKvyUMbV1ATc3DaPHHWerNOHj/K1A7kRLJAY9+SPPUle1haErlaLVTmvbmyZP60JBTEl+Pv+I9ynhPyap+L0XNq2gXREtkjAzGRbdbTn1XYNOzdnqcgi461czZFhfSgI6b4bvkX++kXsWwu66SMw66/Fr9ayphbzHT1yCD2ZAG+NKYEPthY43p0+BlVB8keZ8t0g15Kjhda2njh1s="
   - secure: "PBW9PtyO08PKgd2xEe4kFRTFSdRZWYlQ9eY7w0yEO5EI83ab0n/Knn4WqisGPqxhTtkck0esj08gUOXx6xth2T67ytMffcJKy9z1Zm7gzw1gAE2gr1jOd94/x7ETf5sxz8L7Tmi6JmzVT/8LHPtGq/LJXmBKWLNk82IEqo1ZQUvVC12x0u5WNI4T7zKX4Xk2e/inj3qt0QK+p/WJ8lKuu1oBAAZPLZREs702txYWcxzeHt1meOimjgx4ilp4+ydqpxesV2j42kxuIK4zq57wo5Ce3fht06hNuNyGwtsDtww3hs4iZqazdg7ychCiIvJ9polVAP3uSktzjm89PYWN4GMjqzUYAx4mZ//G/eSR4KT/mJKVXaNO7wdQchESJQ6Fn+U+deifK4VxvFlZJqBobevz6fzshYFhpXFXSuJTeRBb0GpQuV/CLxIPDoY1Mi85WWaowGj2ztLnt72uPxHjL6Ja3IXc2wBx+jxmQbYG0uOe67sGLRBqBwmskekUf+DeV+h/6QTktZaH6oY2wGmWH+eTd1DJtFo0s/EqNmB5pGs1fm960U9bkf3n3w824YzmB0W6cfRaBG8vWHLa9SaQScdjpGlrT5hxtnBQCxHT3kYrAfFuALr5Cbik2WX+30SgEGMvUv4AvxJWkb2hqpOESsXO5AOGp+qv29YUaiBVEKo="
 script:
   - docker build --target test --tag todo-app:test .
-  - docker run -e MONGO_USERNAME -e MONGO_URL -e DATABASE -e MONGO_PASSWORD -e FLASK_APP -e FLASK_ENV todo-app:test tests/end-to-end-tests
+  - docker run -e DATABASE_URL -e DATABASE_NAME -e FLASK_APP -e FLASK_ENV todo-app:test tests/end-to-end-tests
   - docker run todo-app:test tests/integration-tests
   - docker run todo-app:test tests/unit-tests
 deploy:
