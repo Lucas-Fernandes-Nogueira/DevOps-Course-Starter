@@ -5,6 +5,8 @@ from _pytest.monkeypatch import MonkeyPatch
 import requests
 import mongomock
 import pymongo
+import flask_login
+from user import User
 
 @pytest.fixture
 def client(monkeypatch): 
@@ -26,9 +28,11 @@ def client(monkeypatch):
         return mongoClient
 
     monkeypatch.setattr(pymongo, "MongoClient", mock_mongo_client)
+    monkeypatch.setattr(flask_login, "current_user", User('test-user'))
 
     # Create the new app.
     test_app = app.create_app()
+    test_app.config['LOGIN_DISABLED'] = True
 
     # Use the app to create a test_client that can be used in our tests.
     with test_app.test_client() as client:

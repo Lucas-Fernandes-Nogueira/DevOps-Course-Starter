@@ -15,7 +15,7 @@ def test_items():
     items = [item1, item2]
 
     # when
-    indexViewModel = IndexViewModel(items, False)
+    indexViewModel = IndexViewModel(items, False, False)
 
     # then
     assert indexViewModel.items == items
@@ -28,7 +28,7 @@ def test_to_do_items():
     to_do_items = [item1]
 
     # when
-    indexViewModel = IndexViewModel(items, False)
+    indexViewModel = IndexViewModel(items, False, False)
 
     # then
     assert indexViewModel.to_do_items == to_do_items
@@ -41,7 +41,7 @@ def test_doing_items():
     doing_items = [item2]
 
     # when
-    indexViewModel = IndexViewModel(items, False)
+    indexViewModel = IndexViewModel(items, False, False)
 
     # then
     assert indexViewModel.doing_items == doing_items
@@ -57,7 +57,7 @@ def test_done_items():
     done_items = [item3, item4]
 
     # when
-    indexViewModel = IndexViewModel(items, False)
+    indexViewModel = IndexViewModel(items, False, False)
 
     # then
     assert indexViewModel.done_items == done_items
@@ -71,7 +71,7 @@ def test_show_all_done_items():
     items = [item1, item2, item3]
     
     # when
-    indexViewModel = IndexViewModel(items, False)
+    indexViewModel = IndexViewModel(items, False, False)
 
     # then
     assert indexViewModel.show_all_done_items == False
@@ -87,7 +87,7 @@ def test_recent_done_items():
     items = [item1, item2, item3]
 
     # when
-    indexViewModel = IndexViewModel(items, False)
+    indexViewModel = IndexViewModel(items, False, False)
 
     # then
     assert indexViewModel.recent_done_items == [item3]
@@ -102,7 +102,7 @@ def test_older_done_items():
     items = [item1, item2, item3]
 
     # when
-    indexViewModel = IndexViewModel(items, False)
+    indexViewModel = IndexViewModel(items, False, False)
 
     # then
     assert indexViewModel.older_done_items == [item2]

@@ -1,13 +1,14 @@
 import app as app
 from dotenv import find_dotenv, load_dotenv
 import pytest
-from _pytest.monkeypatch import MonkeyPatch
 import requests
 import os
 from threading import Thread
 import mongo_api as mongo
 from selenium import webdriver
-
+import flask_login
+from user import User
+from _pytest.monkeypatch import MonkeyPatch
 
 @pytest.fixture(scope="module")
 def driver():
@@ -29,6 +30,9 @@ def test_app():
 
     # construct the new application
     application = app.create_app()
+    application.config['LOGIN_DISABLED'] = True
+
+    
     # start the app in its own thread.
     thread = Thread(target=lambda: application.run(use_reloader=False))
     thread.daemon = True
@@ -43,7 +47,10 @@ def test_app():
         "test-todo-app")
     mongo_api.delete_database("test-todo-app")
 
-def test_task_journey(driver, test_app):
+def test_task_journey(driver, test_app, monkeypatch):
+    # mock the test user
+    monkeypatch.setattr(flask_login, "current_user", User('test-user'))
+
     driver.get('http://localhost:5000/')
     assert driver.title == 'To-Do App'
 

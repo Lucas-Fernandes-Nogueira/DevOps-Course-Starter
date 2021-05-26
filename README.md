@@ -17,6 +17,15 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poet
 
 2. Fill in the MONGO_USERNAME, MONGO_PASSWORD, MONGO_URL and DATABASE with your MongoDb account credentials and config. Set the PORT variable to 5000.
 
+3. Register an OAuth app on GitHub by following [these](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app) instructions, with the following parameters:
+    * Application name: To-do app
+    * Homepage URL: http://localhost:5000/
+    * Authorization callback URL: http://localhost:5000/login/callback
+
+4. Copy the Oauth App's Client ID and Client Secret to the environment variables CLIENT_ID and CLIENT_SECRET in .env.
+
+5. Set the SECRET_KEY variable to a random alphanumeric string.
+
 ## Dependencies
 
 The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from your preferred shell:
