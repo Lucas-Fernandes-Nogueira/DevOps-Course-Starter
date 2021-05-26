@@ -91,7 +91,7 @@ docker build --target test --tag todo-app:test .
 Then run the tests with the following commands:
 #### Unit tests
 ```bash
-docker run tests/unit-tests
+docker run todo-app:test tests/unit-tests
 ```
 #### Integration tests
 ```bash

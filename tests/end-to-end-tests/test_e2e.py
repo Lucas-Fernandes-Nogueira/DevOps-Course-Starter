@@ -26,7 +26,7 @@ def test_app():
         load_dotenv(file_path, override=True)
 
     # Create the new board & update the board id environment variable
-    os.environ["DATABASE"] = "test-todo-app"
+    os.environ["DATABASE_NAME"] = "test-todo-app"
 
     # construct the new application
     application = app.create_app()
@@ -41,9 +41,7 @@ def test_app():
     # Tear Down
     thread.join(1)
     mongo_api = mongo.MongoApi(
-        os.getenv('MONGO_USERNAME'),
-        os.getenv('MONGO_PASSWORD'),
-        os.getenv('MONGO_URL'),
+        os.getenv('DATABASE_URL'),
         "test-todo-app")
     mongo_api.delete_database("test-todo-app")
 
