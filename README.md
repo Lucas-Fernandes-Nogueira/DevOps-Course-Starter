@@ -107,7 +107,7 @@ Stop all running containers:
 docker stop $(docker ps -a -q)
 ```
 ## Run the Tests
-If you want to run all tests, use the following command:
+If you want to run all tests, use the following command: 
 ```bash
 $ pytest
 ```
