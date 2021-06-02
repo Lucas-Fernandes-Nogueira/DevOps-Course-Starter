@@ -41,7 +41,9 @@ def test_app():
     # Tear Down
     thread.join(1)
     mongo_api = mongo.MongoApi(
-        os.getenv('DATABASE_URL'),
+        os.getenv('DATABASE_USERNAME'),
+        os.getenv('DATABASE_PASSWORD'),
+        os.getenv('DATABASE_HOST'),
         "test-todo-app")
     mongo_api.delete_database("test-todo-app")
 

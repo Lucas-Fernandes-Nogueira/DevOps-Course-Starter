@@ -9,8 +9,8 @@ import datetime
 from bson.objectid import ObjectId
 
 class MongoApi:
-    def __init__(self, database_url, database_name):
-        self._client = pymongo.MongoClient(database_url)
+    def __init__(self, database_username, database_password, database_host, database_name):
+        self._client = pymongo.MongoClient(f'mongodb://{database_username}:{database_password}@{database_host}:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@{database_username}@')
         self._database_name = database_name
 
     @property

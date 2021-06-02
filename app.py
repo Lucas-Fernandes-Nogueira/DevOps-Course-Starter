@@ -28,7 +28,9 @@ def create_app():
     app.secret_key = os.getenv('SECRET_KEY')
     login_manager.init_app(app)
     storage = mongo.MongoApi(
-        os.getenv('DATABASE_URL'),
+        os.getenv('DATABASE_USERNAME'),
+        os.getenv('DATABASE_PASSWORD'),
+        os.getenv('DATABASE_HOST'),
         os.getenv('DATABASE_NAME'))
 
     def user_has_writer_role(function):
